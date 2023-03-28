@@ -22,11 +22,16 @@ import med.voll.api.endereco.Endereco;
 @EqualsAndHashCode(of = "id")
 public class Medico {
 
+	public Medico() {
+
+	}
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String nome;
 	private String email;
+	private String telefone;
 	private String crm;
 
 	@Enumerated(EnumType.STRING)
@@ -38,10 +43,27 @@ public class Medico {
 	public Medico(DadosCadastroMedico dados) {
 		this.nome = dados.nome();
 		this.email = dados.email();
+		this.telefone = dados.telefone();
 		this.crm = dados.crm();
 		this.endereco = new Endereco(dados.endereco());
 		this.especialidade = dados.especialidade();
 
+	}
+
+	public String getNome() {
+		return this.nome;
+	}
+
+	public String getEmail() {
+		return this.email;
+	}
+
+	public String getCrm() {
+		return this.crm;
+	}
+
+	public Especialidade getEspecialidade() {
+		return this.especialidade;
 	}
 
 }
