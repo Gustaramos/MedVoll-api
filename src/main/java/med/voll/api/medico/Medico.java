@@ -8,6 +8,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -22,10 +23,6 @@ import med.voll.api.endereco.Endereco;
 @EqualsAndHashCode(of = "id")
 public class Medico {
 
-	public Medico() {
-
-	}
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -33,6 +30,11 @@ public class Medico {
 	private String email;
 	private String telefone;
 	private String crm;
+	private Boolean ativo;
+
+	public Medico() {
+
+	}
 
 	@Enumerated(EnumType.STRING)
 	private Especialidade especialidade;
@@ -41,6 +43,7 @@ public class Medico {
 	private Endereco endereco;
 
 	public Medico(DadosCadastroMedico dados) {
+		this.ativo = true;
 		this.nome = dados.nome();
 		this.email = dados.email();
 		this.telefone = dados.telefone();
@@ -64,6 +67,27 @@ public class Medico {
 
 	public Especialidade getEspecialidade() {
 		return this.especialidade;
+	}
+
+	public Long getId() {
+		return this.id;
+	}
+
+	public void atualizarInformacoes(@Valid DadosAtualizacaoMedico dados) {
+		if (dados.nome() != null) {
+			this.nome = dados.nome();
+		}
+		if (dados.telefone() != null) {
+			this.telefone = dados.telefone();
+		}
+		if (dados.endereco() != null) {
+			this.endereco.atualizacaoInformacoes(dados.endereco());
+		}
+	}
+
+	public void exluir() {
+		this.ativo = false;
+
 	}
 
 }
